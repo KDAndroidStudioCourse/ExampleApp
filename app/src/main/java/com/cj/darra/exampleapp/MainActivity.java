@@ -7,22 +7,28 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Currency Converter");
     }
 
     public void  clickFunction(View view) {
-        EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
-        EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        EditText amountEditText = (EditText) findViewById(R.id.amountEditText);
 
         Log.i("Info", "Button pressed!");
 
-        Log.i("Values", "Username: " + usernameEditText.getText().toString() + ", Password: " + passwordEditText.getText().toString());
+        Log.i("Amount in $", "" + amountEditText.getText().toString());
 
-        Toast.makeText(this, "Hi there!", Toast.LENGTH_SHORT).show();
+        double amount = Double.parseDouble(amountEditText.getText().toString()) * 0.808668931;
+
+        Log.i("Amount in €", "" + amount);
+
+        Toast.makeText(this, "It is " + String.format("%.2f", amount) + "€!", Toast.LENGTH_LONG).show();
     }
 }

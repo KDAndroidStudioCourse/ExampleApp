@@ -20,16 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView simpson = (ImageView) findViewById(R.id.simpsonImageView);
 
-        simpson.animate().alpha(0).setDuration(2000);
-
-        if(bart) {
-            simpson.setImageResource(R.drawable.homer);
-            bart = false;
-        } else {
-            simpson.setImageResource(R.drawable.bart);
-            bart = true;
-        }
-
-        simpson.animate().alpha(1).setDuration(2000);
+        simpson.animate().scaleX(0.5f).scaleY(0.5f).setDuration(2000);
     }
 }

@@ -1,5 +1,6 @@
 package com.cj.darra.exampleapp;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
-    boolean bart = true;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,20 +18,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Video Demo");
 
-        VideoView videoView = (VideoView) findViewById(R.id.videoView);
-
-        videoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.demovideo);
-
-        MediaController mediaController = new MediaController(this);
-
-        mediaController.setAnchorView(videoView);
-
-        videoView.setMediaController(mediaController);
-
-        videoView.start();
+        mediaPlayer = MediaPlayer.create(this, R.raw.smalldog);
     }
 
-    public void  clickFunction(View view) {
-        Log.i("Info", "Image pressed!");
+    public void  play(View view) {
+        Log.i("Info", "Sound played!");
+
+        mediaPlayer.start();
+    }
+
+    public void  pause(View view) {
+        Log.i("Info", "Sound paused!");
+
+        mediaPlayer.pause();
     }
 }

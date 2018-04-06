@@ -1,45 +1,40 @@
 package com.cj.darra.exampleapp;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    ImageView imageView;
 
-    public class DownloadTask extends AsyncTask<String, Void, String> {
+    public static class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
         @Override
-        protected String doInBackground(String... urls) {
-            String result = "";
+        protected Bitmap doInBackground(String... urls) {
             URL url;
-            HttpURLConnection urlConnection = null;
+            HttpURLConnection urlConnection;
 
             try {
                 url = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) url.openConnection();
 
+                urlConnection.connect();
+
                 InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
-                int data;
 
-                do {
-                    data = reader.read();
-
-                    char current = (char) data;
-
-                    result += current;
-                } while(data != -1);
-
-                return result;
+                return BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 e.printStackTrace();
-                return "Failed";
+
+                return null;
             }
         }
     }
@@ -48,17 +43,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Downloading Web Content");
+        setTitle("Downloading Images");
 
+        imageView = findViewById(R.id.imageView);
+    }
+
+    public void downloadImage(View view) {
         DownloadTask task = new DownloadTask();
-        String result = null;
+        Bitmap result;
 
         try {
-            result = task.execute("http://www.inf.uniroma3.it/~patrigna/didactic/imp_elab/esempi_html/esempio_1.html").get();
+            result = task.execute("https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png").get();
+
+            imageView.setImageBitmap(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Log.i("Result", "" + result);
     }
 }
